@@ -94,3 +94,5 @@ saved_model
 */saved_model/*
 */.archive/*
 *.orig
+**/*saved_model*
+!*saved_model*.zip
