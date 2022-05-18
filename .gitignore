@@ -96,3 +96,6 @@ saved_model
 *.orig
 **/*saved_model*
 !*saved_model*.zip
+**/*trained_model*
+!*trained_model*.zip
+models/*
