@@ -99,3 +99,6 @@ saved_model
 **/*trained_model*
 !*trained_model*.zip
 models/*
+*.trt
+*.engine
+!**/README.md
