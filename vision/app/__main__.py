@@ -1,11 +1,11 @@
 import time
 
-from cscore import CameraServer
-from networktables import NetworkTablesInstance, NetworkTables
 from threading import Thread
 from time import sleep
 
 import app.network.dashboard as dash
+import app.pipelines.pipelineloader as pl
+from app.pipelines.pipeline import VisionPipeline
 
 CFG = '/home/lightning/bin/vision-config.json'
 
@@ -15,15 +15,15 @@ def main():
 	table = dash.load(CFG)
 
 	# start pipelines
-	# pipes = pl.loadall(CFG, table)
+	pipes = pl.loadall(CFG, table)
 
 	# push number of pipelines to dashboard
-	# table.putNumber('# Pipelines', len(pipes))
+	table.putNumber('# Pipelines', len(pipes))
 
 	# start threads
-	# for pipe in pipes:
-	# 	thread = Thread(target=vision_thread, args=(pipe[1],table,pipe[0],))
-	# 	thread.start()
+	for pipe in pipes:
+		thread = Thread(target=vision_thread, args=(pipe[1],table,pipe[0],))
+		thread.start()
 
 	print('APPLICATION STARTED SUCCESSFULLY')
 	

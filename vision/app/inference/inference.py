@@ -1,34 +1,11 @@
-#
-# SPDX-FileCopyrightText: Copyright (c) 1993-2022 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-# SPDX-License-Identifier: Apache-2.0
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-import os
-import sys
-import time
-import ctypes
-import argparse
 import numpy as np
 import tensorrt as trt
 
 import pycuda.driver as cuda
 import pycuda.autoinit
 
-from image_batcher import ImageBatcher
-from visualize import visualize_detections
-
+# from image_batcher import ImageBatcher
+# from visualize import visualize_detections
 
 class TensorRTInfer:
     """
@@ -182,55 +159,55 @@ class TensorRTInfer:
         return detections
 
 
-def main(args):
-    output_dir = os.path.realpath(args.output)
-    os.makedirs(output_dir, exist_ok=True)
+# def main(args):
+#     output_dir = os.path.realpath(args.output)
+#     os.makedirs(output_dir, exist_ok=True)
 
-    labels = []
-    if args.labels:
-        with open(args.labels) as f:
-            for i, label in enumerate(f):
-                labels.append(label.strip())
+#     labels = []
+#     if args.labels:
+#         with open(args.labels) as f:
+#             for i, label in enumerate(f):
+#                 labels.append(label.strip())
 
-    trt_infer = TensorRTInfer(args.engine, args.preprocessor, args.detection_type, args.iou_threshold)
-    batcher = ImageBatcher(args.input, *trt_infer.input_spec(), preprocessor=args.preprocessor)
-    for batch, images, scales in batcher.get_batch():
-        print("Processing Image {} / {}".format(batcher.image_index, batcher.num_images), end="\r")
-        detections = trt_infer.infer(batch, scales, args.nms_threshold)
-        for i in range(len(images)):
-            basename = os.path.splitext(os.path.basename(images[i]))[0]
-            # Image Visualizations
-            output_path = os.path.join(output_dir, "{}.png".format(basename))
-            visualize_detections(images[i], output_path, detections[i], labels)
-            # Text Results
-            output_results = ""
-            for d in detections[i]:
-                line = [d['xmin'], d['ymin'], d['xmax'], d['ymax'], d['score'], d['class']]
-                output_results += "\t".join([str(f) for f in line]) + "\n"
-            with open(os.path.join(args.output, "{}.txt".format(basename)), "w") as f:
-                f.write(output_results)
-    print()
-    print("Finished Processing")
+#     trt_infer = TensorRTInfer(args.engine, args.preprocessor, args.detection_type, args.iou_threshold)
+#     batcher = ImageBatcher(args.input, *trt_infer.input_spec(), preprocessor=args.preprocessor)
+#     for batch, images, scales in batcher.get_batch():
+#         print("Processing Image {} / {}".format(batcher.image_index, batcher.num_images), end="\r")
+#         detections = trt_infer.infer(batch, scales, args.nms_threshold)
+#         for i in range(len(images)):
+#             basename = os.path.splitext(os.path.basename(images[i]))[0]
+#             # Image Visualizations
+#             output_path = os.path.join(output_dir, "{}.png".format(basename))
+#             visualize_detections(images[i], output_path, detections[i], labels)
+#             # Text Results
+#             output_results = ""
+#             for d in detections[i]:
+#                 line = [d['xmin'], d['ymin'], d['xmax'], d['ymax'], d['score'], d['class']]
+#                 output_results += "\t".join([str(f) for f in line]) + "\n"
+#             with open(os.path.join(args.output, "{}.txt".format(basename)), "w") as f:
+#                 f.write(output_results)
+#     print()
+#     print("Finished Processing")
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-e", "--engine", default=None, help="The serialized TensorRT engine")
-    parser.add_argument("-i", "--input", default=None, help="Path to the image or directory to process")
-    parser.add_argument("-o", "--output", default=None, help="Directory where to save the visualization results")
-    parser.add_argument("-l", "--labels", default="./labels_coco.txt", 
-                        help="File to use for reading the class labels from, default: ./labels_coco.txt")
-    parser.add_argument("-d", "--detection_type", default="bbox", choices=["bbox", "segmentation"],
-                        help="Detection type for COCO, either bbox or if you are using Mask R-CNN's instance segmentation - segmentation")
-    parser.add_argument("-t", "--nms_threshold", type=float, 
-                        help="Override the score threshold for the NMS operation, if higher than the threshold in the engine.")
-    parser.add_argument("--iou_threshold", default=0.5, type=float, 
-                        help="Select the IoU threshold for the mask segmentation. Range is 0 to 1. Pixel values more than threshold will become 1, less 0")                                                              
-    parser.add_argument("--preprocessor", default="fixed_shape_resizer", choices=["fixed_shape_resizer", "keep_aspect_ratio_resizer"],
-                        help="Select the image preprocessor to use based on your pipeline.config, either 'fixed_shape_resizer' or 'keep_aspect_ratio_resizer', default: fixed_shape_resizer")
-    args = parser.parse_args()
-    if not all([args.engine, args.input, args.output, args.preprocessor]):
-        parser.print_help()
-        print("\nThese arguments are required: --engine --input --output and --preprocessor")
-        sys.exit(1)
-    main(args)
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("-e", "--engine", default=None, help="The serialized TensorRT engine")
+#     parser.add_argument("-i", "--input", default=None, help="Path to the image or directory to process")
+#     parser.add_argument("-o", "--output", default=None, help="Directory where to save the visualization results")
+#     parser.add_argument("-l", "--labels", default="./labels_coco.txt", 
+#                         help="File to use for reading the class labels from, default: ./labels_coco.txt")
+#     parser.add_argument("-d", "--detection_type", default="bbox", choices=["bbox", "segmentation"],
+#                         help="Detection type for COCO, either bbox or if you are using Mask R-CNN's instance segmentation - segmentation")
+#     parser.add_argument("-t", "--nms_threshold", type=float, 
+#                         help="Override the score threshold for the NMS operation, if higher than the threshold in the engine.")
+#     parser.add_argument("--iou_threshold", default=0.5, type=float, 
+#                         help="Select the IoU threshold for the mask segmentation. Range is 0 to 1. Pixel values more than threshold will become 1, less 0")                                                              
+#     parser.add_argument("--preprocessor", default="fixed_shape_resizer", choices=["fixed_shape_resizer", "keep_aspect_ratio_resizer"],
+#                         help="Select the image preprocessor to use based on your pipeline.config, either 'fixed_shape_resizer' or 'keep_aspect_ratio_resizer', default: fixed_shape_resizer")
+#     args = parser.parse_args()
+#     if not all([args.engine, args.input, args.output, args.preprocessor]):
+#         parser.print_help()
+#         print("\nThese arguments are required: --engine --input --output and --preprocessor")
+#         sys.exit(1)
+#     main(args)

@@ -1,5 +1,7 @@
 tensorrt
 pycuda
+importlib
 numpy
+json
 robotpy-cscore
 pynetworktables
