@@ -5,25 +5,25 @@ from networktables import NetworkTablesInstance, NetworkTables
 from threading import Thread
 from time import sleep
 
-import vision.network.dashboard as dash
-import vision.pipelines.pipelineloader as pl
-from vision.pipelines.pipeline import VisionPipeline
+import app.network.dashboard as dash
+
+CFG = '/home/lightning/bin/vision-config.json'
 
 def main():
 
 	# start dashboard
-	table = dash.load(config)
+	table = dash.load(CFG)
 
 	# start pipelines
-	pipes = pl.loadall(config, table)
+	# pipes = pl.loadall(CFG, table)
 
 	# push number of pipelines to dashboard
-	table.putNumber('# Pipelines', len(pipes))
+	# table.putNumber('# Pipelines', len(pipes))
 
 	# start threads
-	for pipe in pipes:
-		thread = Thread(target=vision_thread, args=(pipe[1],table,pipe[0],))
-		thread.start()
+	# for pipe in pipes:
+	# 	thread = Thread(target=vision_thread, args=(pipe[1],table,pipe[0],))
+	# 	thread.start()
 
 	print('APPLICATION STARTED SUCCESSFULLY')
 	
