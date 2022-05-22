@@ -1,8 +1,5 @@
-# obj-detect
+# Object Detection
 
-*rsc:*
+[TensorFlow Object Detection](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/) custom model training to be deployed to [NVIDIA Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-2gb-developer-kit) via [TensorRT](https://developer.nvidia.com/tensorrt). Utilizes [RobotPy](https://robotpy.readthedocs.io/en/stable/) in inference application for FRC.
 
-[TensorRT Sample Notebooks](https://github.com/NVIDIA/TensorRT/blob/main/quickstart/IntroNotebooks)\
-[1](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html)\
-[2](https://github.com/NVIDIA/TensorRT/tree/main/samples/python/tensorflow_object_detection_api)\
-[3](https://github.com/NVIDIA/object-detection-tensorrt-example/tree/master)
+See [Docs](https://github.com/edurso/obj-detect/tree/master/docs) for more information.
