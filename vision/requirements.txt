@@ -1,0 +1,5 @@
+tensorrt
+pycuda
+numpy
+robotpy-cscore
+pynetworktables

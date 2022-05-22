@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# one-time setup of vision application
+# installs necessary packages
+
 # check admin
 if ![ "$EUID" -eq 0 ] ; then
     echo "Please run as root by prefixing this command with sudo"
@@ -14,17 +17,18 @@ apt update
 apt install -y python3-cscore
 rm Release.key
 
-# install v4l2; what we use to set camera saturation and what not
+# install v4l2 - used to set camera saturation and other params
 apt install -y v4l-utils
 
 # TODO: Assign static IP address through command line
 
 # make app environment
-mkdir -p /home/lightning/voidvision/
-touch /home/lightning/voidvision/runCamera # make sure this file exists - empty version will be overwritten on deploy
+mkdir -p /home/lightning/vision/
+mkdir -p /home/lightning/bin/
+touch /home/lightning/bin/camRunner # make sure this file exists - empty version will be overwritten on deploy
 
 # configure app to run on boot
 tempFile='randomtempfile' # This line is purely to make sure that we aren't overwriting a pre-existing file
-touch $tempFile && echo '@reboot /bin/bash /home/lightning/voidvision/runCamera' > $tempFile
+touch $tempFile && echo '@reboot /bin/bash /home/lightning/bin/camRunner' > $tempFile
 crontab $tempFile
 rm $tempFile
