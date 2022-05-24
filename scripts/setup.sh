@@ -20,8 +20,6 @@ rm Release.key
 # install v4l2 - used to set camera saturation and other params
 apt install -y v4l-utils
 
-# TODO: Assign static IP address through command line
-
 # make app environment
 mkdir -p /home/lightning/vision/
 mkdir -p /home/lightning/bin/

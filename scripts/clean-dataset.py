@@ -5,7 +5,7 @@ import argparse
 
 def main():
 
-	parser = argparse.ArgumentParser(description="Partition dataset of images into training and testing sets",
+	parser = argparse.ArgumentParser(description="Clean dataset of images by removing unlabeled images",
 									 formatter_class=argparse.RawTextHelpFormatter)
 	parser.add_argument(
 		'-d', '--dir',
@@ -28,4 +28,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-

@@ -7,7 +7,7 @@ import app.network.dashboard as dash
 import app.pipelines.pipelineloader as pl
 from app.pipelines.pipeline import VisionPipeline
 
-CFG = '/home/lightning/bin/vision-config.json'
+CFG = '/home/lightning/bin/config.json'
 
 def main():
 
